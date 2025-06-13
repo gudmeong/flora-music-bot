@@ -38,8 +38,8 @@ from strings import get_command
 
 loop = app.loop
 
-GSTATS_COMMAND = get_command("pt")["GSTATS_COMMAND"]
-STATS_COMMAND = get_command("pt")["STATS_COMMAND"]
+GSTATS_COMMAND = get_command("en")["GSTATS_COMMAND"]
+STATS_COMMAND = get_command("en")["STATS_COMMAND"]
 
 
 @app.on_message(filters.command(STATS_COMMAND, PREFIXES) & ~BANNED_USERS)
