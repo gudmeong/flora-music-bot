@@ -1,7 +1,7 @@
 import os
 from random import randint
 
-from WinxMusic import Platform, app
+from WinxMusic import Platform, app, LOGGER
 from WinxMusic.core.call import Winx
 from WinxMusic.misc import db
 from WinxMusic.utils import fallback
@@ -165,7 +165,8 @@ async def stream(
                     duration_min = _data.get("duration_min", duration_min)
                     thumbnail = _data.get("thumb", thumbnail)
                     flink = _data.get("url", link)
-        except Exception:
+        except Exception as e:
+            LOGGER(__name__).error(str(e))
             raise AssistantErr(_["play_16"])
 
         if await is_active_chat(chat_id):

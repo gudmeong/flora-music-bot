@@ -5,12 +5,14 @@ from config import LOG_FILE_NAME
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(name)s - %(filename)s:%(lineno)d - %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
+    format="[%(levelname)s] - [%(asctime)s - %(name)s - %(message)s] -> [%(module)s:%(lineno)d]",
+    datefmt="%Y-%m-%d %H:%M:%S",
     handlers=[
-        RotatingFileHandler(LOG_FILE_NAME, maxBytes=5000000, backupCount=10),
+        RotatingFileHandler(
+            LOG_FILE_NAME, mode="w+", maxBytes=5242880, backupCount=1
+        ),
         logging.StreamHandler(),
-    ],
+    ]
 )
 
 logging.getLogger("pyrogram").setLevel(logging.ERROR)

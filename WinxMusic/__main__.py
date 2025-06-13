@@ -97,16 +97,6 @@ async def init():
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
-    try:
-        loop.run_until_complete(init())
-        loop.run_forever()
-    except (asyncio.exceptions.CancelledError, asyncio.exceptions.TimeoutError) as e:
-        logger.error(f"ERROR asyncio.exceptions: {str(e)} | {type(e)}")
-        sys.exit(1)
-    except Exception:
-        logger.error(traceback.format_exc())
-        sys.exit(1)
-    finally:
-        LOGGER("WinxMusic").info("Stopping WinxMusic! GoodBye")
-        sys.exit(1)
+    loop.run_until_complete(init())
+    loop.run_forever()
     

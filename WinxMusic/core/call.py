@@ -1,5 +1,6 @@
 import asyncio
 from typing import Union
+from traceback import format_exc
 
 from ntgcalls import TelegramServerError
 from pyrogram.errors import (
@@ -254,6 +255,7 @@ class Call:
         video: Union[bool, str] = None,
         image: Union[bool, str] = None,
     ):
+        #LOGGER(__name__).info((chat_id, original_chat_id, link, video, image))
         assistant = await group_assistant(self, chat_id)
         audio_stream_quality = await get_audio_bitrate(chat_id)
         video_stream_quality = await get_video_bitrate(chat_id)
@@ -285,6 +287,7 @@ class Call:
                 config=call_config,
             )
         except Exception:
+            LOGGER(__name__).error(format_exc())
             await self.join_chat(chat_id)
             try:
                 await assistant.play(
@@ -293,15 +296,18 @@ class Call:
                     config=call_config,
                 )
             except Exception as e:
+                LOGGER(__name__).error(format_exc())
                 raise AssistantErr(
                     "**No Active Voice Chat Found**\n\nPlease make sure group's voice chat is enabled. If already enabled, please end it and start fresh voice chat again and if the problem continues, try /restart"
                 )
 
-        except NoActiveGroupCall:
+        except NoActiveGroupCall as p:
+            LOGGER(__name__).error(format_exc())
             raise AssistantErr(
                 "**No Active Voice Chat Found**\n\nPlease make sure group's voice chat is enabled. If already enabled, please end it and start fresh voice chat again and if the problem continues, try /restart"
             )
         except TelegramServerError:
+            LOGGER(__name__).error(format_exc())
             raise AssistantErr(
                 "**TELEGRAM SERVER ERROR**\n\nPlease restart Your voicechat."
             )

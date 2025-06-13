@@ -1,5 +1,6 @@
 import random
 import string
+import traceback
 
 from WinxMusic import LOGGER, Platform, app
 from WinxMusic.utils import seconds_to_min, time_to_seconds
@@ -95,6 +96,7 @@ async def play_commnd(
                     forceplay=fplay,
                 )
             except Exception as e:
+                LOGGER(__name__).info(traceback.format_exc())
                 ex_type = type(e).__name__
                 if ex_type == "AssistantErr":
                     err = e
@@ -145,6 +147,7 @@ async def play_commnd(
                     forceplay=fplay,
                 )
             except Exception as e:
+                LOGGER(__name__).info(traceback.format_exc())
                 ex_type = type(e).__name__
                 if ex_type == "AssistantErr":
                     err = e
@@ -315,6 +318,7 @@ async def play_commnd(
                     forceplay=fplay,
                 )
             except Exception as e:
+                LOGGER(__name__).info(traceback.format_exc())
                 ex_type = type(e).__name__
                 if ex_type == "AssistantErr":
                     err = e
@@ -350,6 +354,7 @@ async def play_commnd(
                     forceplay=fplay,
                 )
             except Exception as e:
+                LOGGER(__name__).info(traceback.format_exc())
                 ex_type = type(e).__name__
                 if ex_type == "AssistantErr":
                     err = e
@@ -377,6 +382,7 @@ async def play_commnd(
                     forceplay=fplay,
                 )
             except Exception as e:
+                LOGGER(__name__).info(traceback.format_exc())
                 ex_type = type(e).__name__
                 if ex_type == "AssistantErr":
                     err = e
@@ -439,6 +445,7 @@ async def play_commnd(
                 forceplay=fplay,
             )
         except Exception as e:
+            LOGGER(__name__).info(traceback.format_exc())
             ex_type = type(e).__name__
             if ex_type == "AssistantErr":
                 err = e

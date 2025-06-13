@@ -27,10 +27,10 @@ async def fetch_call(client, chat_id):
     try:
         peer = await client.resolve_peer(chat_id)
         r = await client.invoke(raw.functions.channels.GetFullChannel(channel=peer))
-        return getattr(r.full_chat, "call", False)
+        return bool(getattr(r.full_chat, "call", None))
     except Exception as e:
         logging.error(str(e))
-        return
+        return False
 
 def play_wrapper(command):
     async def wrapper(client, message):

@@ -146,7 +146,6 @@ async def start_comm(client, message: Message, _):
             await del_plist_msg(client=client, message=message, _=_)
             await asyncio.sleep(1)
         if name[0:3] == "inf":
-            m = await message.reply_text("🔎 Buscando informações!")
             query = (str(name)).replace("info_", "", 1)
             query = f"https://www.youtube.com/watch?v={query}"
             results = VideosSearch(query, limit=1)
@@ -160,11 +159,11 @@ async def start_comm(client, message: Message, _):
                 link = result["link"]
                 published = result["publishedTime"]
                 searched_text = f"""
-🔍__**Informações da Faixa de Vídeo**__
+🔍__**Details information...**__
 
 ❇️**Title:** {title}
 
-⏳**Duration:** {duration} Minutos
+⏳**Duration:** {duration} 
 👀**Views:** `{views}`
 ⏰**Published by:** {published}
 🎥**Channel name:** {channel}
@@ -180,9 +179,8 @@ async def start_comm(client, message: Message, _):
                     ],
                 ]
             )
-            await m.delete()
             await app.send_photo(
-                message.chat.id,
+                chat_id=message.chat.id,
                 photo=thumbnail,
                 caption=searched_text,
                 parse_mode=ParseMode.MARKDOWN,
