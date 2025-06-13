@@ -53,30 +53,6 @@ async def check_playlist(client, message: Message, _):
     await message.reply_photo(carbon, caption=_["playlist_15"].format(link))
 
 
-async def get_keyboard(_, user_id):
-    keyboard = InlineKeyboard(row_width=5)
-    _playlist = await get_playlist_names(user_id)
-    count = len(_playlist)
-    for x in _playlist:
-        _note = await get_playlist(user_id, x)
-        title = _note["title"]
-        title = title.title()
-        keyboard.row(
-            InlineKeyboardButton(
-                text=title,
-                callback_data=f"del_playlist {x}",
-            )
-        )
-    keyboard.row(
-        InlineKeyboardButton(
-            text=_["PL_B_5"],
-            callback_data=f"delete_warning",
-        ),
-        InlineKeyboardButton(text=_["CLOSE_BUTTON"], callback_data=f"close"),
-    )
-    return keyboard, count
-
-
 @app.on_message(command("DELETE_PLAYLIST_COMMAND") & filters.group & ~BANNED_USERS)
 @language
 async def del_group_message(client, message: Message, _):

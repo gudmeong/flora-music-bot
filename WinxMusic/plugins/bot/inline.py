@@ -43,17 +43,17 @@ async def inline_query_handler(client, query):
                 ]
             )
             searched_text = f"""
-❇️**Título:** [{title}]({link})
+❇️**Title:** [{title}]({link})
 
-⏳**Duração:** {duration} Minutos
-👀**Visualizações:** `{views}`
-⏰**Publicado em:** {published}
-🎥**Nome do Canal:** {channel}
-📎**Link do Canal:** [Visite aqui]({channellink})
+⏳**Duration:** {duration}
+👀**Views:** `{views}`
+⏰**Published by:** {published}
+🎥**Channel name:** {channel}
+📎**Channel link:** [Visit Here]({channellink})
 
-__Responda com /play nesta mensagem pesquisada para reproduzir no chat de voz.__
+__Reply with /play on this searched message to play it in voice chat.__
 
-⚡️ **Busca inline por {app.mention}**"""
+⚡️ **Inline search by @{app.me.username}**"""
             answers.append(
                 InlineQueryResultPhoto(
                     photo_url=thumbnail,

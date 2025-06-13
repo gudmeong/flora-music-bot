@@ -112,7 +112,7 @@ async def start_comm(client, message: Message, _):
                 return videoid, msg
 
             try:
-                videoid, msg = await loop.run_in_executor(None, get_stats)
+                videoid, msg = await app.loop.run_in_executor(app.executor, get_stats)
             except Exception as e:
                 print(e)
                 return
@@ -162,21 +162,21 @@ async def start_comm(client, message: Message, _):
                 searched_text = f"""
 🔍__**Informações da Faixa de Vídeo**__
 
-❇️**Título:** {title}
+❇️**Title:** {title}
 
-⏳**Duração:** {duration} Minutos
-👀**Visualizações:** `{views}`
-⏰**Publicado em:** {published}
-🎥**Nome do Canal:** {channel}
-📎**Link do Canal:** [Visite aqui]({channellink})
-🔗**Link do Vídeo:** [Clique aqui]({link})
+⏳**Duration:** {duration} Minutos
+👀**Views:** `{views}`
+⏰**Published by:** {published}
+🎥**Channel name:** {channel}
+📎**Channel link:** [Visit here]({channellink})
+🔗**Link:** [Click here]({link})
 """
 
             key = InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(text="🎥 Assistir", url=f"{link}"),
-                        InlineKeyboardButton(text="🔄 Fechar", callback_data="close"),
+                        InlineKeyboardButton(text="🎥 To attend", url=f"{link}"),
+                        InlineKeyboardButton(text="🔄 Close", callback_data="close"),
                     ],
                 ]
             )
@@ -194,7 +194,7 @@ async def start_comm(client, message: Message, _):
                 sender_name = message.from_user.first_name
                 return await app.send_message(
                     config.LOG_GROUP_ID,
-                    f"👤 {message.from_user.mention} acabou de iniciar o bot para verificar as <code> informações do vídeo </code>\n\n🆔 **ID do usuário:** {sender_id}\n📛 **Nome do usuário:** {sender_name}",
+                    f"👤 {message.from_user.mention} just started the bot to check <code>video information</code>\n\n🆔 User ID: {sender_id}\n📛 User Name: {sender_name}",
                 )
     else:
         try:
@@ -225,7 +225,7 @@ async def start_comm(client, message: Message, _):
             sender_name = message.from_user.first_name
             return await app.send_message(
                 config.LOG_GROUP_ID,
-                f"👤 {message.from_user.mention} iniciou o bot. \n\n🆔 **ID do usuário:** {sender_id}\n📛 **Nome do usuário:** {sender_name}",
+                f"👤 {message.from_user.mention} started the bot. \n\n🆔 User ID: {sender_id}\n📛 Username: {sender_name}",
             )
 
 
@@ -248,7 +248,7 @@ async def welcome(_client: Client, message: Message):
     if config.PRIVATE_BOT_MODE == str(True):
         if not await is_served_private_chat(message.chat.id):
             await message.reply_text(
-                "**O modo privado deste bot foi ativado, apenas meu dono pode usá-lo. Se você quiser usar este bot no seu chat, peça ao meu dono para autorizar seu chat.**"
+                "**This bot's private mode has been activated, only my owner can use it. If you want to use this bot in your chat, please ask my owner to authorize your chat.**"
             )
             return await app.leave_chat(message.chat.id)
     else:

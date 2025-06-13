@@ -91,7 +91,7 @@ async def settings_back_markup(_client: Client, callback_query: CallbackQuery, _
         buttons = private_panel(_, app.username, owner)
         try:
             await callback_query.edit_message_text(
-                _["start_1"].format(app.mention),
+                _["start_1"].format(app.me.username),
                 reply_markup=InlineKeyboardMarkup(buttons),
             )
         except MessageNotModified:
@@ -494,22 +494,22 @@ async def authusers_mar(client: Client, callback_query: CallbackQuery, _):
         return
 
 
-"""✅<u>Configurações do Grupo:</u>
-/settings - Obtenha as configurações completas do grupo com botões inline.
+"""✅<u>Group Settings:</u>
+/settings - Get full group settings with inline buttons.
 
-🔗 <u>Opções nas Configurações:</u>
+🔗 <u>Options in Settings:</u>
 
-1. Você pode definir a Qualidade de Áudio.
-2. Você pode definir a Qualidade de Vídeo.
-3. **Usuários Autorizados**: Você pode alterar o modo dos comandos de admin para "todos" ou "somente admins".
-4. **Modo Limpo**: O bot apaga as mensagens após 5 minutos no grupo para manter o chat limpo e organizado.
-5. **Comando Limpo**: Quando ativado, o bot excluirá os comandos executados imediatamente.
+1. You can set the Audio Quality.
+2. You can set the Video Quality.
+3. Authorized Users : You can change the mode of admin commands to "everyone" or "admins only".
+4. Clean Mode : The bot deletes messages after 5 minutes in the group to keep the chat clean and organized.
+5. Clean Command : When enabled, the bot will delete executed commands immediately.
 
-<b><u>Configurações de Reprodução:</u></b>
-/playmode - Obtenha o painel completo de configurações de reprodução com botões, onde você pode ajustar as configurações de reprodução do grupo.
+<b><u>Playback Settings:</u></b>
+/playmode - Get the full playback settings panel with buttons, where you can adjust group playback settings.
 
-<b><u>Opções no Playmode:</u></b>
-1. **Modo de Busca** [Direto ou Inline] - Altera o modo de busca ao usar o comando /playmode.
-2. **Comandos de Admin** [Todos ou Admins] - Se "todos", qualquer pessoa do grupo poderá usar comandos de admin (como /skip, /stop, etc).
-3. **Tipo de Reprodução** [Todos ou Admins] - Se "admins", apenas os administradores do grupo poderão tocar músicas no chat de voz.
+<b><u>Playmode Options:</u></b>
+1. Seek Mode [Direct or Inline] - Changes the seek mode when using the /playmode command.
+2. Admin Commands [Everyone or Admins] - If "everyone", anyone in the group will be able to use admin commands (like /skip , /stop , etc).
+3. Playback Type [All or Admins] - If "admins", only group admins will be able to play music in voice chat.
 """

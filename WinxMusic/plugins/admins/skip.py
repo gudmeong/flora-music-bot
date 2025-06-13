@@ -116,7 +116,7 @@ async def skip(cli, message: Message, _, chat_id):
                 photo=img,
                 caption=_["stream_1"].format(
                     user,
-                    f"https://t.me/{app.username}?start=info_{videoid}",
+                    f"https://t.me/{app.me.username}?start=info_{videoid}",
                 ),
                 reply_markup=InlineKeyboardMarkup(button),
             )
@@ -125,7 +125,7 @@ async def skip(cli, message: Message, _, chat_id):
                 photo=config.STREAM_IMG_URL,
                 caption=_["stream_1"].format(
                     user,
-                    f"https://t.me/{app.username}?start=info_{videoid}",
+                    f"https://t.me/{app.me.username}?start=info_{videoid}",
                 ),
                 reply_markup=InlineKeyboardMarkup(button),
             )
@@ -153,7 +153,7 @@ async def skip(cli, message: Message, _, chat_id):
                 photo=img,
                 caption=_["stream_1"].format(
                     title[:27],
-                    f"https://t.me/{app.username}?start=info_{videoid}",
+                    f"https://t.me/{app.me.username}?start=info_{videoid}",
                     duration_min,
                     user,
                 ),
@@ -164,7 +164,7 @@ async def skip(cli, message: Message, _, chat_id):
                 photo=config.STREAM_IMG_URL,
                 caption=_["stream_1"].format(
                     title[:27],
-                    f"https://t.me/{app.username}?start=info_{videoid}",
+                    f"https://t.me/{app.me.username}?start=info_{videoid}",
                     duration_min,
                     user,
                 ),
@@ -240,7 +240,7 @@ async def skip(cli, message: Message, _, chat_id):
                     photo=img,
                     caption=_["stream_1"].format(
                         title[:27],
-                        f"https://t.me/{app.username}?start=info_{videoid}",
+                        f"https://t.me/{app.me.username}?start=info_{videoid}",
                         duration_min,
                         user,
                     ),
@@ -251,7 +251,7 @@ async def skip(cli, message: Message, _, chat_id):
                     photo=config.STREAM_IMG_URL,
                     caption=_["stream_1"].format(
                         title[:27],
-                        f"https://t.me/{app.username}?start=info_{videoid}",
+                        f"https://t.me/{app.me.username}?start=info_{videoid}",
                         duration_min,
                         user,
                     ),

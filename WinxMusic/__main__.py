@@ -1,5 +1,7 @@
 import asyncio
 import os
+import signal
+import sys
 
 from pyrogram import idle
 from pytgcalls.exceptions import NoActiveGroupCall
@@ -12,10 +14,15 @@ from WinxMusic.utils.database import get_banned_users, get_gbanned
 from config import BANNED_USERS
 
 logger = LOGGER("WinxMusic")
-loop = asyncio.get_event_loop()
 
 cache_manager = CacheManager(max_size=100, ttl=3600)
 
+def signal_handler(s, f):
+    try:
+        logger.info("Signal received!")
+        sys.exit()
+    except KeyboardInterrupt:
+        sys.exit(1)
 
 async def init():
     if len(config.STRING_SESSIONS) == 0:
@@ -35,6 +42,8 @@ async def init():
     except Exception:
         pass
     await app.start()
+    app.username = app.me.username
+    app.mention = app.me.mention
     for mod in app.load_plugins_from("WinxMusic/plugins"):
         if mod and hasattr(mod, "__MODULE__") and mod.__MODULE__:
             if hasattr(mod, "__HELP__") and mod.__HELP__:
@@ -79,15 +88,25 @@ async def init():
         LOGGER("WinxMusic").error(
             "Please ensure the voice call in your log group is active."
         )
-        exit()
+        sys.exit()
 
     await Winx.decorators()
     LOGGER("WinxMusic").info("WinxMusic Started Successfully")
-    await idle()
-    await app.stop()
-    await userbot.stop()
+    signal.signal(signal.SIGINT, signal_handler)
 
 
 if __name__ == "__main__":
-    loop.run_until_complete(init())
-    LOGGER("WinxMusic").info("Stopping WinxMusic! GoodBye")
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(init())
+        loop.run_forever()
+    except (asyncio.exceptions.CancelledError, asyncio.exceptions.TimeoutError) as e:
+        logger.error(f"ERROR asyncio.exceptions: {str(e)} | {type(e)}")
+        sys.exit(1)
+    except Exception:
+        logger.error(traceback.format_exc())
+        sys.exit(1)
+    finally:
+        LOGGER("WinxMusic").info("Stopping WinxMusic! GoodBye")
+        sys.exit(1)
+    

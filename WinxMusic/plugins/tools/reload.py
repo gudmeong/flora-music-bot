@@ -27,5 +27,5 @@ async def reload_admin_cache(client, message: Message, _):
         await message.reply_text(_["admin_20"])
     except Exception:
         await message.reply_text(
-            "⚠️ Falha ao recarregar o cache de administradores. Certifique-se de que o bot é administrador no seu chat."
+            "⚠️ Failed to reload admin cache. Make sure the bot is an admin in your chat."
         )

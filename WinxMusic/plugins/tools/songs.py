@@ -33,7 +33,7 @@ async def song_commad_group(client, message: Message, _):
             [
                 InlineKeyboardButton(
                     text=_["SG_B_1"],
-                    url=f"https://t.me/{app.username}?start=song",
+                    url=f"https://t.me/{app.me.username}?start=song",
                 ),
             ]
         ]
@@ -92,7 +92,7 @@ async def song_commad_private(client, message: Message, _):
 
     mystic = await message.reply_text(_["play_1"])
 
-    query = message.text.split(None, 1)[1]
+    query = message.text.split(maxsplit=1)[1]
 
     try:
 
@@ -147,50 +147,31 @@ async def songs_back_helper(client, CallbackQuery, _):
 @language_cb
 async def song_helper_cb(client, CallbackQuery, _):
     callback_data = CallbackQuery.data.strip()
-
     callback_request = callback_data.split(None, 1)[1]
-
     stype, vidid = callback_request.split("|")
 
     try:
-
         await CallbackQuery.answer(_["song_6"], show_alert=True)
-
     except Exception:
-
         pass
 
     if stype == "audio":
-
         try:
-
             formats_available, link = await Platform.youtube.formats(vidid, True)
-
         except Exception:
-
             return await CallbackQuery.edit_message_text(_["song_7"])
 
         keyboard = InlineKeyboard()
-
         done = []
-
         for x in formats_available:
-
             check = x["format"]
-
             if "audio" in check:
-
                 if x["filesize"] is None:
                     continue
-
                 form = x["format_note"].title()
-
                 if form not in done:
-
                     done.append(form)
-
                 else:
-
                     continue
 
                 sz = convert_bytes(x["filesize"])
@@ -215,39 +196,25 @@ async def song_helper_cb(client, CallbackQuery, _):
         return await CallbackQuery.edit_message_reply_markup(reply_markup=keyboard)
 
     else:
-
         try:
-
             formats_available, link = await Platform.youtube.formats(vidid, True)
-
         except Exception as e:
-
             print(e)
-
             return await CallbackQuery.edit_message_text(_["song_7"])
-
         keyboard = InlineKeyboard()
 
         # AVC Formats Only
-
         done = [160, 133, 134, 135, 136, 137, 298, 299, 264, 304, 266]
-
         for x in formats_available:
-
             check = x["format"]
-
             if x["filesize"] is None:
                 continue
-
             if int(x["format_id"]) not in done:
                 continue
 
             sz = convert_bytes(x["filesize"])
-
             ap = check.split("-")[1]
-
             to = f"{ap} = {sz}"
-
             keyboard.row(
                 InlineKeyboardButton(
                     text=to,
@@ -273,45 +240,31 @@ async def song_helper_cb(client, CallbackQuery, _):
 @language_cb
 async def song_download_cb(client, CallbackQuery, _):
     try:
-
-        await CallbackQuery.answer("ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ...")
-
+        await CallbackQuery.answer("Downloading...")
     except Exception:
-
         pass
 
     callback_data = CallbackQuery.data.strip()
-
     callback_request = callback_data.split(None, 1)[1]
-
     stype, format_id, vidid = callback_request.split("|")
-
     mystic = await CallbackQuery.edit_message_text(_["song_8"])
 
     yturl = f"https://www.youtube.com/watch?v={vidid}"
-
+    
     with yt_dlp.YoutubeDL({"quiet": True, "cookiefile": f"{cookies()}"}) as ytdl:
-
         x = ytdl.extract_info(yturl, download=False)
 
     title = (x["title"]).title()
-
     title = re.sub("\W+", " ", title)
-
     thumb_image_path = await CallbackQuery.message.download()
 
     duration = x["duration"]
-
     if stype == "video":
-
         thumb_image_path = await CallbackQuery.message.download()
-
         width = CallbackQuery.message.photo.width
-
         height = CallbackQuery.message.photo.height
-
+        
         try:
-
             file_path = await Platform.youtube.download(
                 yturl,
                 mystic,
@@ -319,9 +272,7 @@ async def song_download_cb(client, CallbackQuery, _):
                 format_id=format_id,
                 title=title,
             )
-
         except Exception as e:
-
             return await mystic.edit_text(_["song_9"].format(e))
 
         med = InputMediaVideo(
@@ -335,28 +286,20 @@ async def song_download_cb(client, CallbackQuery, _):
         )
 
         await mystic.edit_text(_["song_11"])
-
         await app.send_chat_action(
             chat_id=CallbackQuery.message.chat.id,
             action=enums.ChatAction.UPLOAD_VIDEO,
+        
         )
-
         try:
-
             await CallbackQuery.edit_message_media(media=med)
-
         except Exception as e:
-
             print(e)
-
             return await mystic.edit_text(_["song_10"])
-
         os.remove(file_path)
 
     elif stype == "audio":
-
         try:
-
             filename = await Platform.youtube.download(
                 yturl,
                 mystic,
@@ -364,9 +307,7 @@ async def song_download_cb(client, CallbackQuery, _):
                 format_id=format_id,
                 title=title,
             )
-
         except Exception as e:
-
             return await mystic.edit_text(_["song_9"].format(e))
 
         med = InputMediaAudio(
@@ -385,13 +326,8 @@ async def song_download_cb(client, CallbackQuery, _):
         )
 
         try:
-
             await CallbackQuery.edit_message_media(media=med)
-
         except Exception as e:
-
             print(e)
-
             return await mystic.edit_text(_["song_10"])
-
         os.remove(filename)

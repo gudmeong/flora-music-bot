@@ -38,7 +38,7 @@ def admin_rights_check(mystic: callable):
                 [
                     [
                         InlineKeyboardButton(
-                            text="Como resolver isso?",
+                            text="How to solve this?",
                             callback_data="AnonymousAdmin",
                         ),
                     ]
@@ -94,7 +94,7 @@ def admin_actual(mystic: callable):
                 [
                     [
                         InlineKeyboardButton(
-                            text="Como resolver isso?",
+                            text="Jow to solve this?",
                             callback_data="AnonymousAdmin",
                         ),
                     ]

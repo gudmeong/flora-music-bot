@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 from bson import ObjectId
-from motor.motor_asyncio import AsyncIOMotorClient
+from async_pymongo import AsyncClient
 from pymongo.errors import OperationFailure
 from pyrogram import filters
 from pyrogram.errors import FloodWait
@@ -13,6 +13,9 @@ from WinxMusic import app
 from WinxMusic.core.mongo import DB_NAME
 from config import BANNED_USERS, MONGO_DB_URI, OWNER_ID
 
+owner_filter = filters.create(
+    lambda _, __, m: m.from_user and m.from_user.id in OWNER_ID
+)
 
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -56,16 +59,14 @@ async def edit_or_reply(mystic, text):
     return await app.send_message(mystic.chat.id, disable_web_page_preview=True)
 
 
-@app.on_message(filters.command("export") & ~BANNED_USERS)
+@app.on_message(filters.command("export") & owner_filter & ~BANNED_USERS)
 async def export_database(client, message):
-    if message.from_user.id not in OWNER_ID:
-        return
-    if MONGO_DB_URI is None:
+    if not MONGO_DB_URI:
         return await message.reply_text(
-            "**Due to some privacy Issue, You can't Import/Export when you are using Yukki Database\n\n Please Fill Your MONGO_DB_URI in vars to use this features**"
+            "**Mongodb url None**"
         )
     mystic = await message.reply_text("Exporting Your mongodatabase...")
-    _mongo_async_ = AsyncIOMotorClient(MONGO_DB_URI)
+    _mongo_async_ = AsyncClient(MONGO_DB_URI)
     databases = await _mongo_async_.list_database_names()
 
     for db_name in databases:
@@ -82,7 +83,7 @@ async def export_database(client, message):
         try:
 
             await app.send_document(
-                message.chat.id, file_path, caption=f"MᴏɴɢᴏDB ʙᴀᴄᴋᴜᴘ ᴅᴀᴛᴀ ғᴏʀ {db_name}"
+                message.chat.id, file_path, caption=f"Mongodb backup for {db_name}"
             )
         except FloodWait as e:
             await asyncio.sleep(e.value)
@@ -121,13 +122,11 @@ async def export_database(client, message):
     await mystic.delete()
 
 
-@app.on_message(filters.command("import") & ~BANNED_USERS)
+@app.on_message(filters.command("import") & owner_filter & ~BANNED_USERS)
 async def import_database(client, message):
-    if message.from_user.id not in OWNER_ID:
-        return
-    if MONGO_DB_URI is None:
+    if not MONGO_DB_URI:
         return await message.reply_text(
-            "**Due to some privacy Issue, You can't Import/Export when you are using Yukki Database\n\n Please Fill Your MONGO_DB_URI in vars to use this features**"
+            "**Mongodb url None**"
         )
 
     if not message.reply_to_message or not message.reply_to_message.document:
@@ -158,7 +157,7 @@ async def import_database(client, message):
             mystic, "Invalid Data Format Please Provide A Valid Exported File"
         )
 
-    _mongo_async_ = AsyncIOMotorClient(MONGO_DB_URI)
+    _mongo_async_ = AsyncClient(MONGO_DB_URI)
     db = _mongo_async_[DB_NAME]
 
     try:

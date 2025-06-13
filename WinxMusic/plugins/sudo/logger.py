@@ -1,4 +1,4 @@
-from pyrogram import Client
+from pyrogram import Client, filters
 from pyrogram.types import Message
 
 import config
@@ -8,8 +8,11 @@ from WinxMusic.utils.database import add_off, add_on
 from WinxMusic.utils.decorators.language import language
 from strings import command
 
+owner_filter = filters.create(
+    lambda _, __, message: message.from_user and message.from_user.id in config.OWNER_ID
+)
 
-@app.on_message(command("LOGGER_COMMAND") & SUDOERS)
+@app.on_message(command("LOGGER_COMMAND") & owner_filter)
 @language
 async def logger(_client: Client, message: Message, _):
     usage = _["log_1"]

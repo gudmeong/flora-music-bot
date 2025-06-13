@@ -62,7 +62,7 @@ async def ping_com(_client: Client, message: Message, _):
     videoid = got[0]["vidid"]
     user = got[0]["by"]
     title = (got[0]["title"]).title()
-    type = (got[0]["streamtype"]).title()
+    typ = (got[0]["streamtype"]).title()
     DUR = get_duration(got)
     if "live_" in file:
         IMAGE = get_image(videoid)
@@ -74,7 +74,7 @@ async def ping_com(_client: Client, message: Message, _):
         if videoid == "telegram":
             IMAGE = (
                 config.TELEGRAM_AUDIO_URL
-                if type == "Áudio"
+                if typ == "Áudio"
                 else config.TELEGRAM_VIDEO_URL
             )
         elif videoid == "soundcloud":
@@ -84,16 +84,16 @@ async def ping_com(_client: Client, message: Message, _):
         else:
             IMAGE = get_image(videoid)
     send = (
-        "**⌛️ Duração:** Duração desconhecida\n\nClique no botão abaixo para ver a lista completa na fila"
+        "**⌛️ Duration:** Unknown duration\n\nClick the button below to see the full list in the queue"
         if DUR == "Unknown"
-        else "\nClique no botão abaixo para ver a lista completa na fila."
+        else "\nClick the button below to see the full queue list."
     )
-    cap = f"""**{app.mention} Player**
+    cap = f"""**@{app.me.username} Player**
 
-🎥**Tocando agora:** {title}
+🎥**Title:** {title}
 
-🔗**Tipo de Transmissão:** {type}
-🙍‍♂️**Reproduzido por:** {user}
+🔗**Transmission Type:** {typ}
+🙍‍♂️**Reproduced by:** {user}
 {send}"""
     upl = (
         queue_markup(_, DUR, "c" if cplay else "g", videoid)
@@ -167,7 +167,7 @@ async def queued_tracks(_client: Client, callback_query: CallbackQuery, _):
     basic[videoid] = False
     buttons = queue_back_markup(_, what)
     med = InputMediaPhoto(
-        media="https://raw.githubusercontent.com/gabrielmaialva33/flora-music-bot/refs/heads/main/assets/queue_img.png",
+        media="https://raw.githubusercontent.com/gudmeong/flora-music-bot/refs/heads/staging/assets/queue_img.png",
         caption=_["queue_1"],
     )
     await callback_query.edit_message_media(media=med)
@@ -176,12 +176,12 @@ async def queued_tracks(_client: Client, callback_query: CallbackQuery, _):
     for x in got:
         j += 1
         if j == 1:
-            msg += f'Tocando agora:\n\n🏷Título: {x["title"]}\nDuração: {x["dur"]}\nPor: {x["by"]}\n\n'
+            msg += f'Playing now:\n\n🏷Title: {x["title"]}\Duration: {x["dur"]}\nBy: {x["by"]}\n\n'
         elif j == 2:
-            msg += f'Na fila:\n\n🏷Título: {x["title"]}\nDuração: {x["dur"]}\nPor: {x["by"]}\n\n'
+            msg += f'The queue:\n\n🏷Title: {x["title"]}\Duration: {x["dur"]}\By: {x["by"]}\n\n'
         else:
-            msg += f'🏷Título: {x["title"]}\nDuração: {x["dur"]}\nPor: {x["by"]}\n\n'
-    if "Na fila" in msg:
+            msg += f'🏷Title: {x["title"]}\Duration: {x["dur"]}\nBy: {x["by"]}\n\n'
+    if "The queue" in msg:
         if len(msg) < 700:
             await asyncio.sleep(1)
             return await callback_query.edit_message_text(msg, reply_markup=buttons)
@@ -225,7 +225,7 @@ async def queue_back(_client: Client, callback_query: CallbackQuery, _):
     videoid = got[0]["vidid"]
     user = got[0]["by"]
     title = (got[0]["title"]).title()
-    type = (got[0]["streamtype"]).title()
+    typ = (got[0]["streamtype"]).title()
     DUR = get_duration(got)
     if "live_" in file:
         image = get_image(videoid)
@@ -237,7 +237,7 @@ async def queue_back(_client: Client, callback_query: CallbackQuery, _):
         if videoid == "telegram":
             image = (
                 config.TELEGRAM_AUDIO_URL
-                if type == "Audio"
+                if typ == "Audio"
                 else config.TELEGRAM_VIDEO_URL
             )
         elif videoid == "soundcloud":
@@ -247,16 +247,16 @@ async def queue_back(_client: Client, callback_query: CallbackQuery, _):
         else:
             image = get_image(videoid)
     send = (
-        "**⌛️ Duração:** Duração desconhecida\n\nClique no botão abaixo para ver a lista completa na fila"
+        "**⌛️ Duration:** Unknown duration\n\nClick the button below to see the full queue list."
         if DUR == "Unknown"
-        else "\nClique no botão abaixo para ver a lista completa na fila."
+      else "\nClick the button below to see the full queue list."
     )
-    cap = f"""**{app.mention} Player**
+    cap = f"""**@{app.me.username} Player**
 
-🎥**Tocando agora:** {title}
+🎥**Playing now:** {title}
 
-🔗**Tipo de Transmissão:** {type}
-🙍‍♂️**Reproduzido por:** {user}
+🔗**Transmission Type:** {typ}
+🙍‍♂️**Reproduced by:** {user}
 {send}"""
     upl = (
         queue_markup(_, DUR, cplay, videoid)

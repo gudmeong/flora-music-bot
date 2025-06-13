@@ -1,4 +1,5 @@
 from pyrogram.types import Message
+from pyrogram import filters
 
 import config
 from WinxMusic import app
@@ -12,8 +13,11 @@ from WinxMusic.utils.database import (
 from WinxMusic.utils.decorators.language import language
 from strings import command
 
+owner_filter = filters.create(
+    lambda _, __, message: message.from_user and message.from_user.id in config.OWNER_ID
+)
 
-@app.on_message(command("AUTHORIZE_COMMAND") & SUDOERS)
+@app.on_message(command("AUTHORIZE_COMMAND") & owner_filter)
 @language
 async def authorize(client, message: Message, _):
     if config.PRIVATE_BOT_MODE != str(True):
@@ -31,7 +35,7 @@ async def authorize(client, message: Message, _):
         await message.reply_text(_["pbot_5"])
 
 
-@app.on_message(command("UNAUTHORIZE_COMMAND") & SUDOERS)
+@app.on_message(command("UNAUTHORIZE_COMMAND") & owner_filter)
 @language
 async def unauthorize(client, message: Message, _):
     if config.PRIVATE_BOT_MODE != str(True):
@@ -49,7 +53,7 @@ async def unauthorize(client, message: Message, _):
         return await message.reply_text(_["pbot_4"])
 
 
-@app.on_message(command("AUTHORIZED_COMMAND") & SUDOERS)
+@app.on_message(command("AUTHORIZED_COMMAND") & owner_filter)
 @language
 async def authorized(client, message: Message, _):
     if config.PRIVATE_BOT_MODE != str(True):

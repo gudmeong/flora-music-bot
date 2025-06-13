@@ -1,5 +1,7 @@
 from pyrogram.errors import ChannelPrivate
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram import raw
+import logging
 
 from WinxMusic import Platform, app
 from WinxMusic.core.call import Winx
@@ -21,6 +23,14 @@ from strings import get_string
 
 links = {}
 
+async def fetch_call(client, chat_id):
+    try:
+        peer = await client.resolve_peer(chat_id)
+        r = await client.invoke(raw.functions.channels.GetFullChannel(channel=peer))
+        return getattr(r.full_chat, "call", False)
+    except Exception as e:
+        logging.error(str(e))
+        return
 
 def play_wrapper(command):
     async def wrapper(client, message):
@@ -89,13 +99,13 @@ def play_wrapper(command):
             chat_id = message.chat.id
             channel = None
         try:
-            is_call_active = (await app.get_chat(chat_id)).is_call_active
+            is_call_active = await fetch_call(app, chat_id)
             if not is_call_active:
                 return await message.reply_text(
                     "**No active video chat found **\n\nPlease make sure you started the voicechat."
                 )
-        except Exception:
-            pass
+        except Exception as e:
+            logging.error(e)
 
         playmode = await get_playmode(message.chat.id)
         playty = await get_playtype(message.chat.id)

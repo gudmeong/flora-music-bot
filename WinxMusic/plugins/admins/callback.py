@@ -266,7 +266,7 @@ async def admin_callback(_client: Client, callback_query: CallbackQuery, _):
                 photo=img,
                 caption=_["stream_1"].format(
                     user,
-                    f"https://t.me/{app.username}?start=info_{videoid}",
+                    f"https://t.me/{app.me.username}?start=info_{videoid}",
                 ),
                 reply_markup=InlineKeyboardMarkup(button),
             )
@@ -297,7 +297,7 @@ async def admin_callback(_client: Client, callback_query: CallbackQuery, _):
                 photo=img,
                 caption=_["stream_1"].format(
                     title[:27],
-                    f"https://t.me/{app.username}?start=info_{videoid}",
+                    f"https://t.me/{app.me.username}?start=info_{videoid}",
                     duration_min,
                     user,
                 ),
@@ -374,7 +374,7 @@ async def admin_callback(_client: Client, callback_query: CallbackQuery, _):
                     photo=img,
                     caption=_["stream_1"].format(
                         title[:27],
-                        f"https://t.me/{app.username}?start=info_{videoid}",
+                        f"https://t.me/{app.me.username}?start=info_{videoid}",
                         duration_min,
                         user,
                     ),

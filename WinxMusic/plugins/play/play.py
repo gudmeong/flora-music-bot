@@ -26,7 +26,7 @@ from strings import command
 @app.on_message(
     command(
         "PLAY_COMMAND",
-        prefixes=["/", "!", "%", ",", "@", "#"],
+        prefixes=["/"],
     )
     & filters.group
     & ~BANNED_USERS

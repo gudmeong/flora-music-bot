@@ -32,7 +32,9 @@ from config import BANNED_USERS
 from strings import command
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
+owner_filter = filters.create(
+    lambda _, __, message: message.from_user and message.from_user.id in config.OWNER_ID
+)
 
 async def is_heroku():
     return "heroku" in socket.getfqdn()
@@ -42,7 +44,7 @@ async def paste_neko(code: str):
     return await WinxBin(code)
 
 
-@app.on_message(command("GETLOG_COMMAND") & SUDOERS)
+@app.on_message(command("GETLOG_COMMAND") & owner_filter)
 @language
 async def log_(client, message, _):
     async def _get_log():
@@ -78,7 +80,7 @@ async def log_(client, message, _):
         await message.reply_text(_["heroku_2"])
 
 
-@app.on_message(command("GETVAR_COMMAND") & SUDOERS)
+@app.on_message(command("GETVAR_COMMAND") & owner_filter)
 @language
 async def varget_(client, message, _):
     usage = _["heroku_3"]
@@ -106,7 +108,7 @@ async def varget_(client, message, _):
             return await message.reply_text(f"**{check_var}:** `{str(output)}`")
 
 
-@app.on_message(command("DELVAR_COMMAND") & SUDOERS)
+@app.on_message(command("DELVAR_COMMAND") & owner_filter)
 @language
 async def vardel_(client, message, _):
     usage = _["heroku_6"]
@@ -134,7 +136,7 @@ async def vardel_(client, message, _):
             os.system(f"kill -9 {os.getpid()} && python3 -m WinxMusic")
 
 
-@app.on_message(command("SETVAR_COMMAND") & SUDOERS)
+@app.on_message(command("SETVAR_COMMAND") & owner_filter)
 @language
 async def set_var(client, message, _):
     usage = _["heroku_8"]
@@ -163,7 +165,7 @@ async def set_var(client, message, _):
         os.system(f"kill -9 {os.getpid()} && python3 -m WinxMusic")
 
 
-@app.on_message(command("USAGE_COMMAND") & SUDOERS)
+@app.on_message(command("USAGE_COMMAND") & owner_filter)
 @language
 async def usage_dynos(client, message, _):
     ### Credits CatUserbot
@@ -220,7 +222,7 @@ Total Left: `{hours}`**h**  `{minutes}`**m**  [`{percentage}`**%**]"""
     return await dyno.edit(text)
 
 
-@app.on_message(command("UPDATE_COMMAND") & SUDOERS)
+@app.on_message(command("UPDATE_COMMAND") & owner_filter)
 @language
 async def update_(client, message, _):
     if await is_heroku():

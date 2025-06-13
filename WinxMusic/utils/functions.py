@@ -7,79 +7,80 @@ from pyrogram.enums import MessageEntityType
 from pyrogram.types import Message
 
 MARKDOWN = """
-Leia o texto abaixo com atenção para descobrir como funciona a formatação!
+Read the text below carefully to find out how formatting works!
 
-<u>Preenchimentos suportados:</u>
+<u>Supported fills:</u>
 
-{GROUPNAME} - Nome do grupo
-{NAME} - Nome do usuário
-{ID} - ID do usuário
-{FIRSTNAME} - Primeiro nome do usuário
-{SURNAME} - Se o usuário tem sobrenome, isso mostrará o sobrenome, caso contrário, nada
-{USERNAME} - Nome de usuário do usuário
+{GROUPNAME} - Group name
+{NAME} - Username
+{ID} - User ID
+{FIRSTNAME} - User's first name
+{SURNAME} - If the user has a surname, this will show the surname, otherwise nothing
+{USERNAME} - User's username
 
-{TIME} - Hora atual
-{DATE} - Data atual
-{WEEKDAY} - Dia da semana atual
+{TIME} - Current time
+{DATE} - Current date
+{WEEKDAY} - Current day of the week
 
-<b><u>NOTA:</u></b> Os preenchimentos só funcionam no módulo de boas-vindas.
+<b><u>NOTE:</u></b> Fill-ins only work in the welcome module.
 
-<u>Formatação suportada:</u>
+<u>Supported formatting:</u>
 
-<code>**Negrito**</code>: Isso aparecerá como texto em <b>Negrito</b>.
-<code>~~riscado~~</code>: Isso aparecerá como texto <strike>riscado</strike>.
-<code>__itálico__</code>: Isso aparecerá como texto em <i>itálico</i>.
-<code>--sublinhado--</code>: Isso aparecerá como texto <u>sublinhado</u>.
-<code>`palavras de código`</code>: Isso aparecerá como texto <code>código</code>.
-<code>||spoiler||</code>: Isso aparecerá como texto <spoiler>Spoiler</spoiler>.
-<code>[hiperlink](google.com)</code>: Isso criará um <a href='https://www.google.com'>hiperlink</a>.
-<code>> olá</code>: Isso aparecerá como <blockquote>olá</blockquote>.
-<b>Nota:</b> Você pode usar tanto Markdown quanto tags HTML.
-
-
-<u>Formatação de botão:</u>
-
-- > <blockquote>texto ~ [texto do botão, link do botão]</blockquote>
+<code>Bold</code>: This will appear as <b>Bold</b> text.
+<code>strikethrough</code>: This will appear as <strike>strikethrough</strike> text.
+<code>italic</code>: This will appear as <i>italic</i> text.
+<code>--underline--</code>: This will appear as <u>underlined</u> text.
+<code>code words</code>: This will appear as the text <code>code</code>.
+<code>spoiler</code>: This will appear as the text <spoiler>Spoiler</spoiler>.
+<code>[hyperlink]( google.com )</code>: This will create a <a href=' https://www.google.com '> hyperlink</a>.
+<code>>hello</code>: This will appear as <blockquote>hello</blockquote>.
+<b>Note:</b> You can use either Markdown or HTML tags.
 
 
-<u>Exemplo:</u>
+<u>Button formatting:</u>
 
-<b>Exemplo</b>  
-<blockquote><i>botão com markdown</i> <code>formatação</code> ~ [texto do botão, https://google.com]</blockquote>
+- > <blockquote>text ~ [button text, button link]</blockquote>
+
+
+<u>Example:</u>
+
+<b>Example</b>
+<blockquote><i>button with markdown</i> <code>formatting</code> ~ [button text, https://google.com ]</blockquote>
 """
+
 WELCOMEHELP = """
-/setwelcome - Responda esta mensagem contendo o formato correto para uma mensagem de boas-vindas, verifique o final desta mensagem.
+/setwelcome - Reply to this message containing the correct format for a welcome message, check the end of this message.
 
-/delwelcome - Apaga a mensagem de boas-vindas.
-/getwelcome - Exibe a mensagem de boas-vindas.
+/delwelcome - Deletes the welcome message.
+/getwelcome - Displays the welcome message.
 
-<b>CONFIGURAR_BOAS_VINDAS -></b>
+<b>SET_WELCOME -></b>
 
-<b>Para definir uma foto ou GIF como mensagem de boas-vindas, adicione sua mensagem de boas-vindas como legenda da foto ou GIF. A legenda deve estar no formato abaixo.</b>
+<b>To set a photo or GIF as your welcome message, add your welcome message as the caption of the photo or GIF. The caption should be in the format below.</b>
 
-Para mensagem de boas-vindas em texto, basta enviar o texto. Em seguida, responda com o comando.
+For a text welcome message, simply send the text. Then reply with the command.
 
-O formato deve ser algo como o seguinte:
+The format should be something like the following:
 
-{GROUPNAME} - Nome do grupo
-{NAME} - Primeiro nome + sobrenome do usuário
-{ID} - ID do usuário
-{FIRSTNAME} - Primeiro nome do usuário
-{SURNAME} - Se o usuário tem sobrenome, isso mostrará o sobrenome, caso contrário, nada
-{USERNAME} - Nome de usuário do usuário
+{GROUPNAME} - Group name
+{NAME} - User's first name + last name
+{ID} - User ID
+{FIRSTNAME} - User's first name
+{SURNAME} - If the user has a surname, this will show the surname, otherwise nothing
+{USERNAME} - User's username
 
-{TIME} - Hora atual
-{DATE} - Data atual
-{WEEKDAY} - Dia da semana atual
+{TIME} - Current time
+{DATE} - Current date
+{WEEKDAY} - Current day of the week
 
-~ #Esse separador (~) deve estar entre o texto e os botões, remova também este comentário.
+~ #Esse separator (~) must be between the text and the buttons, remove this comment as well.
 
-button=[Duck, https://duckduckgo.com]
-button2=[Github, https://github.com]
+button=[Duck, https://duckduckgo.com ]
+button2=[Github, https://github.com ]
 
-<b>NOTAS -></b>
+<b>NOTES -></b>
 
-Verifique /markdownhelp para saber mais sobre formatações e outras sintaxes.
+Check /markdownhelp for more information on formatting and other syntax.
 """
 
 

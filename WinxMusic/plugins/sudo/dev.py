@@ -10,6 +10,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from WinxMusic import app
 from WinxMusic.misc import SUDOERS
+import config
 
 
 ## -------- end of required imports to run this script
@@ -19,6 +20,9 @@ from WinxMusic.misc import SUDOERS
 
 ## end
 
+owner_filter = filters.create(
+    lambda _, __, message: message.from_user and message.from_user.id in config.OWNER_ID
+)
 
 async def aexec(code, client, message):
     local_vars = {}
@@ -33,10 +37,10 @@ async def aexec(code, client, message):
 
 
 @app.on_edited_message(
-    filters.command(["ev", "eval"]) & SUDOERS & ~filters.forwarded & ~filters.via_bot
+    filters.command(["ev", "eval"]) & owner_filter & ~filters.forwarded & ~filters.via_bot
 )
 @app.on_message(
-    filters.command(["ev", "eval"]) & SUDOERS & ~filters.forwarded & ~filters.via_bot
+    filters.command(["ev", "eval"]) & owner_filter & ~filters.forwarded & ~filters.via_bot
 )
 async def executor(client: app, message: Message):
     if len(message.command) < 2:
@@ -137,9 +141,9 @@ async def forceclose_command(_, CallbackQuery):
 
 
 @app.on_edited_message(
-    filters.command("sh") & SUDOERS & ~filters.forwarded & ~filters.via_bot
+    filters.command("sh") & owner_filter & ~filters.forwarded & ~filters.via_bot
 )
-@app.on_message(filters.command("sh") & SUDOERS & ~filters.forwarded & ~filters.via_bot)
+@app.on_message(filters.command("sh") & owner_filter & ~filters.forwarded & ~filters.via_bot)
 async def shellrunner(_, message: Message):
     if len(message.command) < 2:
         return await message.reply("<b>Give some commands like:</b>\n/sh git pull")

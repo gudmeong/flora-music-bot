@@ -71,7 +71,7 @@ async def auto_end():
 
                 try:
                     async for member in userbot.get_call_members(chat_id):
-                        if member is None:
+                        if not member:
                             continue
                         members.append(member)
                 except ValueError:

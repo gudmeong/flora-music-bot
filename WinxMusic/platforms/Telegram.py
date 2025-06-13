@@ -147,7 +147,7 @@ class Telegram:
                     completed_size = convert_bytes(current)
                     speed = convert_bytes(speed)
                     text = f"""
-**{app.mention} Telagram Media Downloader**
+**{app.me.username} Telagram Media Downloader**
 
 **Total file size:** {total_size}
 **Completed:** {completed_size} 

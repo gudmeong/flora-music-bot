@@ -22,7 +22,7 @@ from config import BANNED_USERS
 from strings import command
 
 TEXT = f"""
-🔒 **Privacy Policy for {app.mention} !**
+🔒 **Privacy Policy for {app.me.username} !**
 
 Your privacy is important to us. To learn more about how we collect, use, and protect your data, please review our Privacy Policy here: [Privacy Policy](https://github.com/gabrielmaialva33/flora-music-bot/blob/master/PRIVACY.md).
 

@@ -1,5 +1,6 @@
 import asyncio
 import platform
+import logging
 from sys import version as pyver
 
 import psutil
@@ -35,7 +36,7 @@ from WinxMusic.utils.inline.stats import (
 from config import BANNED_USERS, PREFIXES
 from strings import get_command
 
-loop = asyncio.get_running_loop()
+loop = app.loop
 
 GSTATS_COMMAND = get_command("pt")["GSTATS_COMMAND"]
 STATS_COMMAND = get_command("pt")["STATS_COMMAND"]
@@ -87,9 +88,9 @@ async def gstats_global(_client: Client, message: Message, _):
         return videoid, co
 
     try:
-        videoid, co = await loop.run_in_executor(None, get_stats)
+        videoid, co = await loop.run_in_executor(app.executor, get_stats)
     except Exception as e:
-        print(e)
+        logging.error(e)
         return
     (
         title,
@@ -99,7 +100,7 @@ async def gstats_global(_client: Client, message: Message, _):
         vidid,
     ) = await Platform.youtube.details(videoid, True)
     title = title.title()
-    final = f"🎶 **Faixas mais tocadas no {app.mention}** 🎶\n\n**Título:** {title}\n\nTocada **{co}** vezes"
+    final = f"🎶 **Most played tracks @{app.me.username}** 🎶\n\n**Title:** {title}\n\nCounted **{co}** Times"
     upl = get_stats_markup(_, True if message.from_user.id in SUDOERS else False)
     await app.send_photo(
         message.chat.id,
@@ -185,7 +186,7 @@ async def top_users_ten(_client: Client, callback_query: CallbackQuery, _):
         return msg, list_arranged
 
     try:
-        msg, list_arranged = await loop.run_in_executor(None, get_stats)
+        msg, list_arranged = await loop.run_in_executor(app.executor, get_stats)
     except Exception as e:
         print(e)
         return
@@ -206,11 +207,11 @@ async def top_users_ten(_client: Client, callback_query: CallbackQuery, _):
             except Exception:
                 continue
             limit += 1
-            msg += f"🔗`{extract}` Tocou {count} vezes no bot.\n\n"
+            msg += f"🔗`{extract}` Tapped {count} times on the bot.\n\n"
         temp = (
-            _["gstats_5"].format(limit, app.mention)
+            _["gstats_5"].format(limit, app.me.username)
             if what == "Chats"
-            else _["gstats_6"].format(limit, app.mention)
+            else _["gstats_6"].format(limit, app.me.username)
         )
         msg = temp + msg
     med = InputMediaPhoto(media=config.GLOBAL_IMG_URL, caption=msg + " 🎧")
@@ -410,13 +411,13 @@ async def back_buttons(_client: Client, callback_query: CallbackQuery, _):
         )
         med = InputMediaPhoto(
             media=config.STATS_IMG_URL,
-            caption=_["gstats_11"].format(app.mention) + " 📊",
+            caption=_["gstats_11"].format(app.me.username) + " 📊",
         )
         try:
             await callback_query.edit_message_media(media=med, reply_markup=upl)
         except MessageIdInvalid:
             await callback_query.message.reply_photo(
                 photo=config.STATS_IMG_URL,
-                caption=_["gstats_11"].format(app.mention) + " 📊",
+                caption=_["gstats_11"].format(app.me.username) + " 📊",
                 reply_markup=upl,
             )
